@@ -180,7 +180,7 @@ function onWindowResize() {
 }
 
 // Render
-/*
+
 function animate()
 {
 	requestAnimationFrame(animate);
@@ -188,5 +188,3 @@ function animate()
 	renderer.render(scene, camera);
 }
 animate();
-*/
-renderer.render(scene, camera);
