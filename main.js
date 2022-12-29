@@ -1,10 +1,13 @@
 import './style.css'
 import * as THREE from 'three'
-
-// Configuring the scene
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 3000);
+const camera = new THREE.PerspectiveCamera(
+	45,
+	window.innerWidth / window.innerHeight,
+	0.1,
+	3000);
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
   antialiasing: true,
@@ -13,24 +16,30 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
 camera.position.set(10, 10, 20);
 camera.lookAt(0, 0, 0);
 
-// Plane
+// Plane and Center Points
 
 const geo = new THREE.SphereGeometry(0.05, 32, 16);
 const mat = new THREE.MeshBasicMaterial({color: 0xffffff});
+const pcen = new THREE.Mesh(geo, mat);
 const pbot = new THREE.Mesh(geo, mat);
 const pleft = new THREE.Mesh(geo, mat);
 const pback = new THREE.Mesh(geo, mat);
+pcen.position.set(0, 0, 0);
 pleft.position.set(-5, 0, 0);
 pbot.position.set(0, -5, 0);
 pback.position.set(0, 0, -5);
-scene.add(pbot, pleft, pback);
+scene.add(pcen, pbot, pleft, pback);
 
-const gridHelpx = new THREE.GridHelper(10, 10, 0x0000ff);
-const gridHelpy = new THREE.GridHelper(10, 10, 0x00ff00);
-const gridHelpz = new THREE.GridHelper(10, 10, 0xff0000);
+const gridHelpx = new THREE.GridHelper(10, 10, 0x0000cc, 0x666666);
+const gridHelpy = new THREE.GridHelper(10, 10, 0x00cc00, 0x666666);
+const gridHelpz = new THREE.GridHelper(10, 10, 0xcc0000, 0x666666);
 gridHelpx.position.set(0, -5, 0);
 gridHelpy.position.set(-5, 0, 0);
 gridHelpz.position.set(0, 0, -5);
@@ -40,16 +49,27 @@ scene.add(gridHelpx, gridHelpy, gridHelpz);
 
 // ----------------------------------------------------------------------------------------------------
 
-// Point
+// Points
 
-const geometry_point = new THREE.BufferGeometry();
-const material_point = new THREE.PointsMaterial({color: 0x00ff00});
-const point = new THREE.Points(geometry_point, material_point);
-let point_x = 3;
+let point_x = 4;
 let point_y = 1;
-let point_z = -2;
-point.position.set(point_x, point_y, point_z);
-scene.add(point);
+let point_z = 3;
+
+let point2_x =-1;
+let point2_y = 2;
+let point2_z = -3;
+
+const pgeo = new THREE.SphereGeometry(0.05, 32, 16);
+const pmat1 = new THREE.MeshBasicMaterial({color: 0x00ff00});
+const pmat2 = new THREE.MeshBasicMaterial({color: 0xff00ff});
+const p1 = new THREE.Mesh(pgeo, pmat1)
+const p2 = new THREE.Mesh(pgeo, pmat2);
+
+p1.position.set(point_x, point_y, point_z);
+p2.position.set(point2_x, point2_y, point2_z);
+
+scene.add(p1, p2);
+
 
 // ----------------------------------------------------------------------------------------------------
 
@@ -60,7 +80,7 @@ function create_box(x, y, z)
 	const edges_box = new THREE.EdgesGeometry (geometry_box);
 	const box = new THREE.LineSegments (edges_box, new THREE.LineBasicMaterial({color: 0x2345ff}));
 	box.position.set(x, y, z);
-	box.lookAt(point_x, point_y, point_z);
+	box.lookAt(point2_x, point2_y, point2_z);
 	scene.add(box);
 }
 
@@ -68,7 +88,7 @@ function create_box(x, y, z)
 
 // Creating boxes as group
 
-function constructGroup(x, y, z)
+function constructGroup(x, y, z, lookx, looky, lookz)
 {
 	// Box
 	const geometry_box = new THREE.BoxGeometry(1, 1, 1);
@@ -101,30 +121,72 @@ function constructGroup(x, y, z)
 	const group = new THREE.Group();
 	group.add(box, circle1, circle2, circle3, circle4, circle5, circle6);
 	group.position.set(x, y, z);
-	group.lookAt(point_x, point_y, point_z);
+	group.lookAt(lookx, looky, lookz);
 	scene.add(group);
 }
 
 // ----------------------------------------------------------------------------------------------------
 
 // Adding the vector to show the position of point
-
-const vector = new THREE.Vector3(point.position.x, point.position.y, point.position.z);
-vector.normalize();
+/*
+const vector1 = new THREE.Vector3(point_x, point_y, point_z);
+vector1.normalize();
 const origin = new THREE.Vector3(0, 0, 0);
-const arrowHelper = new THREE.ArrowHelper(vector, origin, 1, 0xff0000);
-scene.add(arrowHelper);
+const arrowHelper1 = new THREE.ArrowHelper(vector1, origin, 1, 0x00ff00);
+scene.add(arrowHelper1);
 
-let n = 0;
-while (n < 5)
+const vector2 = new THREE.Vector3(point2_x, point2_y, point2_z);
+vector2.normalize();
+
+const vector3 = new THREE.Vector3(vector2.getComponent(0), vector2.getComponent(1), vector2.getComponent(2));
+// const help = new THREE.ArrowHelper(vector3, origin, 10, 0xff0000);
+const arrowHelper2 = new THREE.ArrowHelper(vector2, origin, 1, 0xff00ff);
+
+//const lerp = Vector3.subVectors(vector2, vector1);
+// const arrowHelper3 = new THREE.ArrowHelper(vector2, vector1, 5, 0xffffff);
+scene.add(arrowHelper2);
+*/
+function constructLineOrigin(x, y, z)
 {
-	constructGroup(origin.getComponent(0), origin.getComponent(1), origin.getComponent(2));
-	origin.add(vector);
-	n++;
+	let repeats = Math.ceil(Math.sqrt((x * x) + (y * y) + (z * z))); 
+	const vector = new THREE.Vector3(x, y, z);
+	vector.normalize();
+	const origin = new THREE.Vector3(0, 0, 0);
+	const color = (Math.floor(Math.random() * 16777215).toString(16));
+	const arrowHelper = new THREE.ArrowHelper(vector, origin, 1, '#'+color);
+	scene.add(arrowHelper);
+	while (repeats > 0)
+	{
+		constructGroup(origin.getComponent(0), origin.getComponent(1), origin.getComponent(2), x, y, z);
+		origin.add(vector);
+		repeats--;
+	}
 }
+
+constructLineOrigin(point_x, point_y, point_z);
+constructLineOrigin(point2_x, point2_y, point2_z);
+constructLineOrigin(2, 3, 8);
 
 // ----------------------------------------------------------------------------------------------------
 
-// Render
+// Resize
 
+window.addEventListener('resize', onWindowResize, false)
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.render(scene, camera);
+}
+
+// Render
+/*
+function animate()
+{
+	requestAnimationFrame(animate);
+	controls.update();
+	renderer.render(scene, camera);
+}
+animate();
+*/
 renderer.render(scene, camera);
