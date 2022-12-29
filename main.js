@@ -1,6 +1,8 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import Stats from 'three/examples/jsm/libs/stats.module';
+import { GUI } from 'dat.gui';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -25,39 +27,42 @@ camera.lookAt(0, 0, 0);
 
 // Plane and Center Points
 
-const geo = new THREE.SphereGeometry(0.05, 32, 16);
-const mat = new THREE.MeshBasicMaterial({color: 0xffffff});
-const pcen = new THREE.Mesh(geo, mat);
-const pbot = new THREE.Mesh(geo, mat);
-const pleft = new THREE.Mesh(geo, mat);
-const pback = new THREE.Mesh(geo, mat);
-pcen.position.set(0, 0, 0);
-pleft.position.set(-5, 0, 0);
-pbot.position.set(0, -5, 0);
-pback.position.set(0, 0, -5);
-scene.add(pcen, pbot, pleft, pback);
+function showGrid()
+{
+	const geo = new THREE.SphereGeometry(0.05, 32, 16);
+	const mat = new THREE.MeshBasicMaterial({color: 0xffffff});
+	const pcen = new THREE.Mesh(geo, mat);
+	const pbot = new THREE.Mesh(geo, mat);
+	const pleft = new THREE.Mesh(geo, mat);
+	const pback = new THREE.Mesh(geo, mat);
+	pcen.position.set(0, 0, 0);
+	pleft.position.set(-5, 0, 0);
+	pbot.position.set(0, -5, 0);
+	pback.position.set(0, 0, -5);
+	scene.add(pcen, pbot, pleft, pback);
 
-const gridHelpx = new THREE.GridHelper(10, 10, 0x0000cc, 0x666666);
-const gridHelpy = new THREE.GridHelper(10, 10, 0x00cc00, 0x666666);
-const gridHelpz = new THREE.GridHelper(10, 10, 0xcc0000, 0x666666);
-gridHelpx.position.set(0, -5, 0);
-gridHelpy.position.set(-5, 0, 0);
-gridHelpz.position.set(0, 0, -5);
-gridHelpy.rotation.z = 1.57079633;
-gridHelpz.rotation.x = 1.57079633
-scene.add(gridHelpx, gridHelpy, gridHelpz);
-
+	const gridHelpx = new THREE.GridHelper(10, 10, 0x0000cc, 0x666666);
+	const gridHelpy = new THREE.GridHelper(10, 10, 0x00cc00, 0x666666);
+	const gridHelpz = new THREE.GridHelper(10, 10, 0xcc0000, 0x666666);
+	gridHelpx.position.set(0, -5, 0);
+	gridHelpy.position.set(-5, 0, 0);
+	gridHelpz.position.set(0, 0, -5);
+	gridHelpy.rotation.z = 1.57079633;
+	gridHelpz.rotation.x = 1.57079633
+	scene.add(gridHelpx, gridHelpy, gridHelpz);
+}
+showGrid();
 // ----------------------------------------------------------------------------------------------------
 
 // Points
 
-let point_x = 4;
-let point_y = 1;
-let point_z = 3;
+let point_x = 0;
+let point_y = 0;
+let point_z = 0;
 
-let point2_x =-1;
-let point2_y = 2;
-let point2_z = -3;
+let point2_x = 0;
+let point2_y = 0;
+let point2_z = 0;
 
 const pgeo = new THREE.SphereGeometry(0.05, 32, 16);
 const pmat1 = new THREE.MeshBasicMaterial({color: 0x00ff00});
@@ -127,25 +132,8 @@ function constructGroup(x, y, z, lookx, looky, lookz)
 
 // ----------------------------------------------------------------------------------------------------
 
-// Adding the vector to show the position of point
-/*
-const vector1 = new THREE.Vector3(point_x, point_y, point_z);
-vector1.normalize();
-const origin = new THREE.Vector3(0, 0, 0);
-const arrowHelper1 = new THREE.ArrowHelper(vector1, origin, 1, 0x00ff00);
-scene.add(arrowHelper1);
+// Creating the line
 
-const vector2 = new THREE.Vector3(point2_x, point2_y, point2_z);
-vector2.normalize();
-
-const vector3 = new THREE.Vector3(vector2.getComponent(0), vector2.getComponent(1), vector2.getComponent(2));
-// const help = new THREE.ArrowHelper(vector3, origin, 10, 0xff0000);
-const arrowHelper2 = new THREE.ArrowHelper(vector2, origin, 1, 0xff00ff);
-
-//const lerp = Vector3.subVectors(vector2, vector1);
-// const arrowHelper3 = new THREE.ArrowHelper(vector2, vector1, 5, 0xffffff);
-scene.add(arrowHelper2);
-*/
 function constructLineOrigin(x, y, z)
 {
 	let repeats = Math.ceil(Math.sqrt((x * x) + (y * y) + (z * z))); 
@@ -163,9 +151,34 @@ function constructLineOrigin(x, y, z)
 	}
 }
 
-constructLineOrigin(point_x, point_y, point_z);
-constructLineOrigin(point2_x, point2_y, point2_z);
-constructLineOrigin(2, 3, 8);
+// ----------------------------------------------------------------------------------------------------
+
+// GUI
+
+const gui = new GUI();
+const p1Folder = gui.addFolder('First point position');
+p1Folder.add(p1.position, 'x', -5, 5);
+p1Folder.add(p1.position, 'y', -5, 5);
+p1Folder.add(p1.position, 'z', -5, 5);
+
+const p2Folder = gui.addFolder('Second point position');
+p2Folder.add(p2.position, 'x', -5, 5);
+p2Folder.add(p2.position, 'y', -5, 5);
+p2Folder.add(p2.position, 'z', -5, 5);
+
+var button = {
+	add: function() {
+		scene.remove.apply(scene, scene.children);
+		showGrid();
+		scene.add(p1, p2);
+		constructLineOrigin(p1.position.x, p1.position.y, p1.position.z);
+		constructLineOrigin(p2.position.x, p2.position.y, p2.position.z);
+	}
+};
+gui.add(button, 'add').name('Render');
+gui.close();
+
+
 
 // ----------------------------------------------------------------------------------------------------
 

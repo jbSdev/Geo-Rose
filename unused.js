@@ -54,3 +54,26 @@ function animate()
 	renderer.render(scene, camera);
 }
 animate();
+
+// ----------------------------------------------------------------------------------------------------
+// Arrow Help
+
+// Adding the vector to show the position of point
+/*
+const vector1 = new THREE.Vector3(point_x, point_y, point_z);
+vector1.normalize();
+const origin = new THREE.Vector3(0, 0, 0);
+const arrowHelper1 = new THREE.ArrowHelper(vector1, origin, 1, 0x00ff00);
+scene.add(arrowHelper1);
+
+const vector2 = new THREE.Vector3(point2_x, point2_y, point2_z);
+vector2.normalize();
+
+const vector3 = new THREE.Vector3(vector2.getComponent(0), vector2.getComponent(1), vector2.getComponent(2));
+// const help = new THREE.ArrowHelper(vector3, origin, 10, 0xff0000);
+const arrowHelper2 = new THREE.ArrowHelper(vector2, origin, 1, 0xff00ff);
+
+//const lerp = Vector3.subVectors(vector2, vector1);
+// const arrowHelper3 = new THREE.ArrowHelper(vector2, vector1, 5, 0xffffff);
+scene.add(arrowHelper2);
+*/
