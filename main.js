@@ -157,14 +157,14 @@ function constructLineOrigin(x, y, z)
 
 const gui = new GUI();
 const p1Folder = gui.addFolder('First point position');
-p1Folder.add(p1.position, 'x', -5, 5);
-p1Folder.add(p1.position, 'y', -5, 5);
-p1Folder.add(p1.position, 'z', -5, 5);
+p1Folder.add(p1.position, 'x', -5, 5).step(0.1);
+p1Folder.add(p1.position, 'y', -5, 5).step(0.1);
+p1Folder.add(p1.position, 'z', -5, 5).step(0.1);
 
 const p2Folder = gui.addFolder('Second point position');
-p2Folder.add(p2.position, 'x', -5, 5);
-p2Folder.add(p2.position, 'y', -5, 5);
-p2Folder.add(p2.position, 'z', -5, 5);
+p2Folder.add(p2.position, 'x', -5, 5).step(0.1);
+p2Folder.add(p2.position, 'y', -5, 5).step(0.1);
+p2Folder.add(p2.position, 'z', -5, 5).step(0.1);
 
 var button = {
 	add: function() {
