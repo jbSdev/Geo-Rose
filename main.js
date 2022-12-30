@@ -41,9 +41,9 @@ function showGrid()
 	pback.position.set(0, 0, -5);
 	scene.add(pcen, pbot, pleft, pback);
 
-	const gridHelpx = new THREE.GridHelper(10, 10, 0x0000cc, 0x666666);
-	const gridHelpy = new THREE.GridHelper(10, 10, 0x00cc00, 0x666666);
-	const gridHelpz = new THREE.GridHelper(10, 10, 0xcc0000, 0x666666);
+	const gridHelpx = new THREE.GridHelper(10, 10, 0x0000dd, 0x666666);
+	const gridHelpy = new THREE.GridHelper(10, 10, 0x00dd00, 0x666666);
+	const gridHelpz = new THREE.GridHelper(10, 10, 0xdd0000, 0x666666);
 	gridHelpx.position.set(0, -5, 0);
 	gridHelpy.position.set(-5, 0, 0);
 	gridHelpz.position.set(0, 0, -5);
@@ -143,6 +143,7 @@ function constructLineOrigin(x, y, z)
 	const color = (Math.floor(Math.random() * 16777215).toString(16));
 	const arrowHelper = new THREE.ArrowHelper(vector, origin, 1, '#'+color);
 	scene.add(arrowHelper);
+
 	while (repeats > 0)
 	{
 		constructGroup(origin.getComponent(0), origin.getComponent(1), origin.getComponent(2), x, y, z);
@@ -177,8 +178,6 @@ var button = {
 };
 gui.add(button, 'add').name('Render');
 gui.close();
-
-
 
 // ----------------------------------------------------------------------------------------------------
 
