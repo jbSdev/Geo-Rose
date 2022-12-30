@@ -30,24 +30,30 @@ function showGrid()
 {
 	const geo = new THREE.SphereGeometry(0.05, 32, 16);
 	const mat = new THREE.MeshBasicMaterial({color: 0xffffff});
+
 	const pcen = new THREE.Mesh(geo, mat);
 	const pbot = new THREE.Mesh(geo, mat);
 	const pleft = new THREE.Mesh(geo, mat);
 	const pback = new THREE.Mesh(geo, mat);
+
 	pcen.position.set(0, 0, 0);
 	pleft.position.set(-5, 0, 0);
 	pbot.position.set(0, -5, 0);
 	pback.position.set(0, 0, -5);
+
 	scene.add(pcen, pbot, pleft, pback);
 
 	const gridHelpx = new THREE.GridHelper(10, 10, 0x0000dd, 0x666666);
 	const gridHelpy = new THREE.GridHelper(10, 10, 0x00dd00, 0x666666);
 	const gridHelpz = new THREE.GridHelper(10, 10, 0xdd0000, 0x666666);
+
 	gridHelpx.position.set(0, -5, 0);
 	gridHelpy.position.set(-5, 0, 0);
 	gridHelpz.position.set(0, 0, -5);
+
 	gridHelpy.rotation.z = 1.57079633;
 	gridHelpz.rotation.x = 1.57079633
+
 	scene.add(gridHelpx, gridHelpy, gridHelpz);
 }
 showGrid();
@@ -85,6 +91,7 @@ function create_box(x, y, z)
 	const box = new THREE.LineSegments (edges_box, new THREE.LineBasicMaterial({color: 0x2345ff}));
 	box.position.set(x, y, z);
 	box.lookAt(point2_x, point2_y, point2_z);
+
 	scene.add(box);
 }
 
@@ -103,18 +110,21 @@ function constructGroup(x, y, z, lookx, looky, lookz)
 	// Circles - i know it's ugly, but it works! :D
 	const geometry_circle = new THREE.CircleGeometry(0.5, 16);
 	const edges_circle = new THREE.EdgesGeometry(geometry_circle);
+
 	const circle1 = new THREE.LineSegments(edges_circle, new THREE.LineBasicMaterial({color: 0xaaaaff}));
 	const circle2 = new THREE.LineSegments(edges_circle, new THREE.LineBasicMaterial({color: 0xaaaaff}));
 	const circle3 = new THREE.LineSegments(edges_circle, new THREE.LineBasicMaterial({color: 0xaaaaff}));
 	const circle4 = new THREE.LineSegments(edges_circle, new THREE.LineBasicMaterial({color: 0xaaaaff}));
 	const circle5 = new THREE.LineSegments(edges_circle, new THREE.LineBasicMaterial({color: 0xaaaaff}));
 	const circle6 = new THREE.LineSegments(edges_circle, new THREE.LineBasicMaterial({color: 0xaaaaff}));
+
 	circle1.position.set(0.5, 0, 0);		// right
 	circle2.position.set(-0.5, 0, 0);		// left
 	circle3.position.set(0, 0.5, 0);		// front
 	circle4.position.set(0, -0.5, 0);		// back
 	circle5.position.set(0, 0, 0.5);		// top
 	circle6.position.set(0, 0, -0.5);		// back
+
 	circle1.rotation.y += 1.57079633;
 	circle2.rotation.y += 1.57079633;
 	circle3.rotation.x += 1.57079633;
@@ -171,6 +181,7 @@ var button = {
 		scene.remove.apply(scene, scene.children);
 		showGrid();
 		scene.add(p1, p2);
+		
 		constructLineOrigin(p1.position.x, p1.position.y, p1.position.z);
 		constructLineOrigin(p2.position.x, p2.position.y, p2.position.z);
 	}
