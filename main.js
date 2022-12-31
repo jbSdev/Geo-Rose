@@ -61,24 +61,38 @@ showGrid();
 
 // Points
 
-let point_x = 0;
-let point_y = 0;
-let point_z = 0;
+let point1_x = 0;
+let point1_y = 0;
+let point1_z = 0;
 
 let point2_x = 0;
 let point2_y = 0;
 let point2_z = 0;
 
+let point3_x = 0;
+let point3_y = 0;
+let point3_z = 0;
+
+let point4_x = 0;
+let point4_y = 0;
+let point4_z = 0;
+
 const pgeo = new THREE.SphereGeometry(0.05, 32, 16);
-const pmat1 = new THREE.MeshBasicMaterial({color: 0x00ff00});
-const pmat2 = new THREE.MeshBasicMaterial({color: 0xff00ff});
+const pmat1 = new THREE.MeshBasicMaterial({color: 0xff0000});
+const pmat2 = new THREE.MeshBasicMaterial({color: 0x0000ff});
+const pmat3 = new THREE.MeshBasicMaterial({color: 0x00ff00});
+const pmat4 = new THREE.MeshBasicMaterial({color: 0xff00ff});
 const p1 = new THREE.Mesh(pgeo, pmat1)
 const p2 = new THREE.Mesh(pgeo, pmat2);
+const p3 = new THREE.Mesh(pgeo, pmat3);
+const p4 = new THREE.Mesh(pgeo, pmat4);
 
-p1.position.set(point_x, point_y, point_z);
+p1.position.set(point1_x, point1_y, point1_z);
 p2.position.set(point2_x, point2_y, point2_z);
+p3.position.set(point3_x, point3_y, point3_z);
+p4.position.set(point4_x, point4_y, point4_z);
 
-scene.add(p1, p2);
+scene.add(p1, p2, p3, p4);
 
 
 // ----------------------------------------------------------------------------------------------------
@@ -163,30 +177,66 @@ function constructLineOrigin(x, y, z)
 
 // ----------------------------------------------------------------------------------------------------
 
+// Creating Line from A to B
+
+function constructLineAtoB(x1, y1, z1, x2, y2, z2)
+{
+	let repeats = Math.ceil(Math.sqrt(	((x2 - x1) * (x2 - x1))	 +	((y2 - y1) * (y2 - y1))  +  ((z2 - z1) * (z2 - z1))	 ));
+	const v1 = new THREE.Vector3(x1, y1, z1);
+	const v2 = new THREE.Vector3(x2, y2, z2);
+	const origin = new THREE.Vector3(0, 0, 0);
+	v1.sub(v2).normalize();
+	const v_help = new THREE.ArrowHelper(v1, v2, v1.length(), 0x00ff00);
+	scene.add(v_help);
+	while (repeats > 0)
+	{
+		constructGroup(v2.getComponent(0), v2.getComponent(1), v2.getComponent(2), v1.getComponent(0) + x1, v1.getComponent(1) + y1, v1.getComponent(2) + z1);
+		v2.add(v1);
+		repeats--;
+	}
+}
+
+
+// ----------------------------------------------------------------------------------------------------
+
 // GUI
 
 const gui = new GUI();
-const p1Folder = gui.addFolder('First point position');
+const p1Folder = gui.addFolder('Point A');
 p1Folder.add(p1.position, 'x', -5, 5).step(0.1);
 p1Folder.add(p1.position, 'y', -5, 5).step(0.1);
 p1Folder.add(p1.position, 'z', -5, 5).step(0.1);
 
-const p2Folder = gui.addFolder('Second point position');
+const p2Folder = gui.addFolder('Point B');
 p2Folder.add(p2.position, 'x', -5, 5).step(0.1);
 p2Folder.add(p2.position, 'y', -5, 5).step(0.1);
 p2Folder.add(p2.position, 'z', -5, 5).step(0.1);
+
+const p3Folder = gui.addFolder('Point C');
+p3Folder.add(p3.position, 'x', -5, 5).step(0.1);
+p3Folder.add(p3.position, 'y', -5, 5).step(0.1);
+p3Folder.add(p3.position, 'z', -5, 5).step(0.1);
+
+const p4Folder = gui.addFolder('Point D');
+p4Folder.add(p4.position, 'x', -5, 5).step(0.1);
+p4Folder.add(p4.position, 'y', -5, 5).step(0.1);
+p4Folder.add(p4.position, 'z', -5, 5).step(0.1);
+
+
 
 var button = {
 	add: function() {
 		scene.remove.apply(scene, scene.children);
 		showGrid();
-		scene.add(p1, p2);
+		scene.add(p1, p2, p3, p4);
 		
-		constructLineOrigin(p1.position.x, p1.position.y, p1.position.z);
-		constructLineOrigin(p2.position.x, p2.position.y, p2.position.z);
+		//constructLineOrigin(p1.position.x, p1.position.y, p1.position.z);
+		//constructLineOrigin(p2.position.x, p2.position.y, p2.position.z);
+		constructLineAtoB(p1.position.x, p1.position.y, p1.position.z, p2.position.x, p2.position.y, p2.position.z);
+		constructLineAtoB(p3.position.x, p3.position.y, p3.position.z, p4.position.x, p4.position.y, p4.position.z);
 	}
 };
-gui.add(button, 'add').name('Render');
+gui.add(button, 'add').name('Click to render');
 gui.close();
 
 // ----------------------------------------------------------------------------------------------------

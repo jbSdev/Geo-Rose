@@ -77,3 +77,31 @@ const arrowHelper2 = new THREE.ArrowHelper(vector2, origin, 1, 0xff00ff);
 // const arrowHelper3 = new THREE.ArrowHelper(vector2, vector1, 5, 0xffffff);
 scene.add(arrowHelper2);
 */
+
+// ----------------------------------------------------------------------------------------------------
+// A to B
+/*
+const geo_x = new THREE.SphereGeometry(0.05, 5, 5);
+const mat_a = new THREE.MeshBasicMaterial({color: 0xff0000});
+const mat_b = new THREE.MeshBasicMaterial({color: 0x0000ff});
+const p_a = new THREE.Mesh(geo_x, mat_a);
+const p_b = new THREE.Mesh(geo_x, mat_b);
+p_a.position.set(3.5, 2.2, 2);
+p_b.position.set(3.5, 2.2, -2);
+scene.add(p_a, p_b);
+
+const v_a = new THREE.Vector3(3.5, 2.2, 2);
+const v_b = new THREE.Vector3(3.5, 2.2, -2);
+const origin = new THREE.Vector3(0, 0, 0);
+v_a.sub(v_b).normalize();
+const v_a_help = new THREE.ArrowHelper(v_a, origin, v_a.length(), 0xffffff);
+scene.add(v_a_help);
+
+constructGroup(v_b.getComponent(0), v_b.getComponent(1), v_b.getComponent(2), v_a.getComponent(0) + 3.5, v_a.getComponent(1) + 2.2, v_a.getComponent(2) + 2);
+v_b.add(v_a);
+constructGroup(v_b.getComponent(0), v_b.getComponent(1), v_b.getComponent(2), v_a.getComponent(0) + 3.5, v_a.getComponent(1) + 2.2, v_a.getComponent(2) + 2);
+v_b.add(v_a);
+constructGroup(v_b.getComponent(0), v_b.getComponent(1), v_b.getComponent(2), v_a.getComponent(0) + 3.5, v_a.getComponent(1) + 2.2, v_a.getComponent(2) + 2);
+*/
+
+// ----------------------------------------------------------------------------------------------------
