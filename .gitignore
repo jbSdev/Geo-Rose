@@ -7,14 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules/*
-!node_modules/three
-!node_modules/dat.gui
-!node_modules/vite
-!node_modules/@types/dat.gui
-# dist
 dist-ssr
 *.local
+node_modules
+#!node_modules/three
+#!node_modules/dat.gui
+#!node_modules/vite
+#!node_modules/@types/dat.gui
 
 # Editor directories and files
 .vscode/*
@@ -27,5 +26,5 @@ dist-ssr
 *.sln
 *.sw?
 
-README.md
-unused.js
+bin
+dist
