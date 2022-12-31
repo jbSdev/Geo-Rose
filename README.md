@@ -9,6 +9,10 @@ Currently from (0, 0, 0) to point (x, y, z)
 
 #### To-do:
 
-- [ ] Enable to create lines from (x1, y1, z1) to (x2, y2, z2)
+- [x] Enable to create lines from (x1, y1, z1) to (x2, y2, z2)
+###### done on 31.12.22
 
-- [ ] Create panel that allows user to input points on site
+- [x] Create panel that allows user to input points on site
+###### done on 30.12.22
+
+- [ ] Change input panel to something more user-friendly and pretty
